@@ -5,11 +5,12 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
+const DB_URI = require('./db')
 
 const app = express()
 const Schema = mongoose.Schema
 
-const mongoDB = 'mongodb+srv://ghostaramic:bjka3yOdNV61Y9Y3@cluster0.ojzzyly.mongodb.net/node-auth?retryWrites=true&w=majority'
+const mongoDB = DB_URI
 mongoose.connect(mongoDB, {
     useUnifiedTopology: true,
     useNewUrlParser: true

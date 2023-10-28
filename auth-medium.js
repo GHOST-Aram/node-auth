@@ -33,12 +33,10 @@ passport.use(new LocalStrategy(
             const user = await User.findOne({ username: username})
     
             if(!user){
-                return done(null, false, {
-                    message: 'username not registered'
-                })
+                return done(null, false, { message: 'username not registered' })
             }
     
-            const isValidPassword = validPassword(password, user.hash, user.salt)
+            const isValidPassword = comparePasswords(password, user.hash, user.salt)
             if(isValidPassword){
                 return done(null, user, {
                     message: 'Login was successful'
@@ -87,11 +85,9 @@ app.use(session({
 }))
 
 // __________________________Passport Authentication_________________
-// app level authentication using session stategy
-app.use(passport.authenticate('session'))
 
-// or also authenticates sessions
 app.use(passport.initialize())
+// app level authentication using session stategy
 app.use(passport.session())
 
 // ----------------Routes____________________

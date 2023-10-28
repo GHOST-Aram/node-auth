@@ -53,10 +53,12 @@ passport.use(
     })
 )
 passport.serializeUser((user, done) =>{
-    done(null, user.id)
+    process.nextTick(() =>{
+        return done(null, user.id)
+    })
 })
 
-passport.deserializeUser(async(id, done) =>{
+passport.deserializeUser(async(user, done) =>{
     try {
         const user = await User.findById(id)
         done(null, user)

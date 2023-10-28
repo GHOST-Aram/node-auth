@@ -7,7 +7,7 @@ const authenticate = () => passport.authenticate('local',{
        failureRedirect: '/login'
    }
 )
-const authSessions = passport.session()
+const authenticationSession = () => passport.session()
 
 const Authentication = new LocalStrategy(verifyUserInfo)
 
@@ -21,7 +21,7 @@ const comparePasswords = (password, savedPassword) =>{
 }
 
 const createUser = async(req) =>{
-    const hashedPassword = await hashPassword(req.body.password)
+    const hashedPassword = await generateHashedPassword(req.body.password)
     await User.create({
         username: req.body.username,
         password: hashedPassword
@@ -32,7 +32,7 @@ const findUser = async(username) =>{
     return await User.findOne({ username: username})
 }
 
-const hashPassword = async (password) =>{
+const generateHashedPassword = async (password) =>{
     return bcrypt.hash(password, 10, 
         async(err, hashedPassword) =>{
             if(err){
